@@ -19,11 +19,25 @@ const chats = {
 export function fetchMessages(name) {  // eslint-disable-line import/prefer-default-export
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (chats[name]) {
-        resolve(chats[name]);
-      } else {
-        reject('Oops, chat not found.');
-      }
-    }, 1000);
-  });
+    if (chats[name]) {
+      resolve(chats[name]);
+    } else {
+      reject('Oops, chat not found.');
+    }
+  }, 1000);
+});
+}
+
+export function addMessage(chatName, message) {
+  chats[chatName].push(message);
+}
+
+export function removeMessage(chatName, index) {
+  chats[chatName] = removeItem(chats[chatName], index);
+}
+
+function removeItem(array, index) {
+  if (index >= 0) {
+    return [...array.slice(0, index), ...array.slice(index + 1)];
+  }
 }

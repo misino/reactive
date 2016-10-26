@@ -23,6 +23,9 @@ export default class MobxChat extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitMessage = this.handleSubmitMessage.bind(this);
+    this.handleAddMessageChange = this.handleAddMessageChange.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
 
     this.state = {
       name: props.routeParams.name || '',
@@ -53,6 +56,18 @@ export default class MobxChat extends Component {
 
     this.props.chat.fetchChat(name);
     router.push(`/mobxchat/${name}`);
+  }
+
+  handleAddMessageChange(ev) {
+    this.props.chat.changeMessageToAdd(ev.target.value);
+  }
+
+  handleSubmitMessage() {
+    this.props.chat.addMessage();
+  }
+
+  handleRemove(index) {
+    this.props.chat.removeMessage(index);
   }
 
   render() {
@@ -101,7 +116,13 @@ export default class MobxChat extends Component {
                 {chat.name === 'doge' &&
                 <img src="/assets/doge.jpg" alt="doge" />
                 }
-                <Messages messages={chat.messages} />
+                <Messages
+                  messages={chat.messages}
+                  messageToAdd={chat.messageToAdd}
+                  onAddMessage={this.handleSubmitMessage}
+                  onChangeMessage={this.handleAddMessageChange}
+                  onRemoveMessage={this.handleRemove}
+                />
               </div>
             </div>
             }

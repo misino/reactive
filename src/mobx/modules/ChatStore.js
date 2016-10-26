@@ -10,6 +10,7 @@ export default class ChatStore {
   @observable messages = List();
   @observable phase = INIT;
   @observable error = null;
+  @observable messageToAdd = "";
 
   @action async fetchChat(name) {
     try {
@@ -36,5 +37,20 @@ export default class ChatStore {
   @action resetChat() {
     this.phase = INIT;
     this.messages = List();
+  }
+
+  @action changeMessageToAdd(message) {
+    console.log(message);
+    this.messageToAdd = message;
+  }
+
+  @action addMessage() {
+    api.addMessage(this.name, this.messageToAdd);
+    this.fetchChat(this.name);
+  }
+
+  @action removeMessage(index) {
+    api.removeMessage(this.name, index);
+    this.fetchChat(this.name);
   }
 }
