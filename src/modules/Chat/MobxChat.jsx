@@ -37,6 +37,10 @@ export default class MobxChat extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.chat.resetChat();
+  }
+
   handleChange(ev) {
     this.setState({
       name: ev.target.value,
@@ -85,27 +89,27 @@ export default class MobxChat extends Component {
         <div className="row">
           <div className="col-lg-4">
             {chat.phase === LOADING &&
-              <h4>Loading...</h4>
+            <h4>Loading...</h4>
             }
 
             {chat.phase === SUCCESS &&
-              <div className="panel panel-default">
-                <div className="panel-heading">
-                  <h3 className="panel-title">Chat</h3>
-                </div>
-                <div className="panel-body">
-                  {chat.name === 'doge' &&
-                    <img src="/assets/doge.jpg" alt="doge" />
-                  }
-                  <Messages messages={chat.messages} />
-                </div>
+            <div className="panel panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title">Chat</h3>
               </div>
+              <div className="panel-body">
+                {chat.name === 'doge' &&
+                <img src="/assets/doge.jpg" alt="doge" />
+                }
+                <Messages messages={chat.messages} />
+              </div>
+            </div>
             }
 
             {chat.phase === ERROR &&
-              <div className="alert alert-danger">
-                <span>{chat.error}</span>
-              </div>
+            <div className="alert alert-danger">
+              <span>{chat.error}</span>
+            </div>
             }
           </div>
         </div>

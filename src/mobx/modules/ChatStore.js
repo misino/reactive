@@ -6,7 +6,7 @@ import { INIT, LOADING, SUCCESS, ERROR } from '../../consts/phaseEnums';
 import * as api from '../../apis/chatApi';
 
 export default class ChatStore {
-  @observable name = null;
+@observable name = null;
   @observable messages = List();
   @observable phase = INIT;
   @observable error = null;
@@ -22,14 +22,19 @@ export default class ChatStore {
 
       runInAction('#fetchChat success', () => {
         this.name = name;
-        this.phase = SUCCESS;
-        this.messages = List(messages);
-      });
+      this.phase = SUCCESS;
+      this.messages = List(messages);
+    });
     } catch (error) {
       runInAction('#fetchChat error', () => {
         this.phase = ERROR;
-        this.error = String(error);
-      });
+      this.error = String(error);
+    });
     }
+  }
+
+  @action resetChat() {
+    this.phase = INIT;
+    this.messages = List();
   }
 }

@@ -3,7 +3,7 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 
 import { LOADING, SUCCESS, ERROR } from '../../consts/phaseEnums';
-import { fetchChat } from '../../redux/modules/chatDuck';
+import { fetchChat, resetChat } from '../../redux/modules/chatDuck';
 
 import Messages from './Messages';
 
@@ -26,6 +26,10 @@ class ReduxChat extends Component {
     if (routeParams.name) {
       this.props.fetchChat(routeParams.name);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.resetChat();
   }
 
   handleChange(ev) {
@@ -75,27 +79,27 @@ class ReduxChat extends Component {
         <div className="row">
           <div className="col-lg-4">
             {chat.phase === LOADING &&
-              <h4>Loading...</h4>
+            <h4>Loading...</h4>
             }
 
             {chat.phase === SUCCESS &&
-              <div className="panel panel-default">
-                <div className="panel-heading">
-                  <h3 className="panel-title">Chat</h3>
-                </div>
-                <div className="panel-body">
-                  {chat.name === 'doge' &&
-                    <img src="/assets/doge.jpg" alt="doge" />
-                  }
-                  <Messages messages={chat.messages} />
-                </div>
+            <div className="panel panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title">Chat</h3>
               </div>
+              <div className="panel-body">
+                {chat.name === 'doge' &&
+                <img src="/assets/doge.jpg" alt="doge" />
+                }
+                <Messages messages={chat.messages} />
+              </div>
+            </div>
             }
 
             {chat.phase === ERROR &&
-              <div className="alert alert-danger">
-                <span>{chat.error}</span>
-              </div>
+            <div className="alert alert-danger">
+              <span>{chat.error}</span>
+            </div>
             }
           </div>
         </div>
@@ -110,11 +114,13 @@ ReduxChat.propTypes = {
   chat: PropTypes.object.isRequired,  // eslint-disable-line react/forbid-prop-types
   push: PropTypes.func.isRequired,
   fetchChat: PropTypes.func.isRequired,
+  resetChat: PropTypes.func.isRequired,
 };
 
 const actions = {
   push,
   fetchChat,
+  resetChat,
 };
 
 export default connect(state => ({
